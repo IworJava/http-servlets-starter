@@ -1,5 +1,6 @@
 package com.dmdev.http.servlet;
 
+import com.dmdev.http.service.FlightService;
 import com.dmdev.http.util.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,8 +12,10 @@ import java.io.IOException;
 
 @WebServlet("/content")
 public class ContentServlet extends HttpServlet {
+    private final FlightService flightService = FlightService.getInstance();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("flights", flightService.findAll());
         req.getRequestDispatcher(JspHelper.getPath("content"))
                 .forward(req, resp);
     }
