@@ -18,8 +18,8 @@ import java.util.Optional;
 public class UserDao implements Dao<Integer, User> {
     private static final UserDao INSTANCE = new UserDao();
     private static final String SAVE_SQL = """
-            INSERT INTO users(name, birthday, email, password, gender, role)
-            VALUES (?, ?, ?, ?, ?, ?);
+            INSERT INTO users(name, birthday, image, email, password, gender, role)
+            VALUES (?, ?, ?, ?, ?, ?, ?);
             """;
     private static final String EXIST_EMAIL_SQL = """
             SELECT id
@@ -69,10 +69,11 @@ public class UserDao implements Dao<Integer, User> {
         ) {
             statement.setString(1, user.getName());
             statement.setDate(2, Date.valueOf(user.getBirthday()));
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getPassword());
-            statement.setString(5, user.getGender().name());
-            statement.setString(6, user.getRole().name());
+            statement.setString(3, user.getImage());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getPassword());
+            statement.setString(6, user.getGender().name());
+            statement.setString(7, user.getRole().name());
             statement.executeUpdate();
 
             ResultSet generatedKeys = statement.getGeneratedKeys();

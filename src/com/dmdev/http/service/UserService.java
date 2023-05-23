@@ -9,23 +9,25 @@ import com.dmdev.http.validator.CreateUserValidator;
 import com.dmdev.http.validator.ValidationResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserService {
     private static final UserService INSTANCE = new UserService();
-    private static final CreateUserValidator createUserValidator = CreateUserValidator.getInstance();
+
+    private final CreateUserValidator createUserValidator = CreateUserValidator.getInstance();
     private final CreateUserMapper createUserMapper = CreateUserMapper.getInstance();
     private final UserDao userDao = UserDao.getInstance();
+    private final ImageService imageService = ImageService.getInstance();
 
+    @SneakyThrows
     public Integer create(CreateUserDto userDto) {
-    //     validate
         ValidationResult validationResult = createUserValidator.isValid(userDto);
         if (!validationResult.isValid()) {
             throw new ValidationException(validationResult.getErrors());
         }
-    //     map dto to entity
         User user = createUserMapper.mapFrom(userDto);
-    //     save
+        imageService.upload(user.getImage(), userDto.getImage().getInputStream());
         return userDao.save(user).getId();
     }
 

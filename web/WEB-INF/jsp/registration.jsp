@@ -13,12 +13,15 @@
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/registration" method="post">
+<form action="${pageContext.request.contextPath}/registration" method="post" enctype="multipart/form-data">
     <label for="nameId">Name: </label>
     <input type="text" name="name" id="nameId" required />
     <br><br>
     <label for="birthdayId">Birthday: </label>
     <input type="date" name="birthday" id="birthdayId" required />
+    <br><br>
+    <label for="imageId">Image: </label>
+    <input type="file" name="image" id="imageId" required />
     <br><br>
     <label for="emailId">Email: </label>
     <input type="email" name="email" id="emailId" required />
