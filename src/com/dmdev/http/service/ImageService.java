@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImageService {
@@ -27,6 +28,14 @@ public class ImageService {
                     StandardOpenOption.TRUNCATE_EXISTING
             );
         }
+    }
+
+    @SneakyThrows
+    public Optional<InputStream> get(String imagePath) {
+        Path fullImagePath = Path.of(basePath, imagePath);
+        return Files.exists(fullImagePath)
+                ? Optional.of(Files.newInputStream(fullImagePath))
+                : Optional.empty();
     }
 
     public static ImageService getInstance() {
