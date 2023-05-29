@@ -13,6 +13,8 @@
 </head>
 <body>
 
+<%@ include file="header.jsp" %>
+
 <img src="${pageContext.request.contextPath}/images/users/01.jpeg" alt="user's photo" width="200">
 <%--<img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="user's photo" width="500">--%>
 <br><br>

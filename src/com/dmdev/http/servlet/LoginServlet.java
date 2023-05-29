@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
 
     @SneakyThrows
     private static void onLoginSuccess(HttpServletRequest req, HttpServletResponse resp, UserDto userDto) {
-        req.getSession().setAttribute("login", userDto);
+        req.getSession().setAttribute("user", userDto);
         resp.sendRedirect("/flights");
     }
 

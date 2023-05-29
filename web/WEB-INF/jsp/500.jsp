@@ -11,6 +11,10 @@
     <title>Title</title>
 </head>
 <body>
-    ERROR. OOops...
+
+<%@ include file="header.jsp" %>
+
+<h3>ERROR. OOops...</h3>
+
 </body>
 </html>
