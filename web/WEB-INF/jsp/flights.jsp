@@ -29,9 +29,3 @@
 </ul>
 </body>
 </html>
-
-<%!
-  public void jspInit() {
-    System.out.println("Hello world!");
-  }
-%>

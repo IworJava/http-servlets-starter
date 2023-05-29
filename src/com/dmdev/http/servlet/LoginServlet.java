@@ -3,6 +3,7 @@ package com.dmdev.http.servlet;
 import com.dmdev.http.dto.UserDto;
 import com.dmdev.http.service.UserService;
 import com.dmdev.http.util.JspHelper;
+import com.dmdev.http.util.UrlPath;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +13,7 @@ import lombok.SneakyThrows;
 
 import java.io.IOException;
 
-@WebServlet("/login")
+@WebServlet(UrlPath.LOGIN)
 public class LoginServlet extends HttpServlet {
     private static final UserService userService = UserService.getInstance();
 
@@ -34,11 +35,11 @@ public class LoginServlet extends HttpServlet {
     @SneakyThrows
     private static void onLoginSuccess(HttpServletRequest req, HttpServletResponse resp, UserDto userDto) {
         req.getSession().setAttribute("user", userDto);
-        resp.sendRedirect("/flights");
+        resp.sendRedirect(UrlPath.FLIGHTS);
     }
 
     @SneakyThrows
     private void onLoginFail(HttpServletRequest req, HttpServletResponse resp) {
-        resp.sendRedirect("/login?error&email=" + req.getParameter("email"));
+        resp.sendRedirect(UrlPath.LOGIN + "?error&email=" + req.getParameter("email"));
     }
 }

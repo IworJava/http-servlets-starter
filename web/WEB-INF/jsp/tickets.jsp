@@ -39,9 +39,3 @@ Jakarta Standard Tag Library Implementation » 2.0.0 (glassfish)
 </ul>
 </body>
 </html>
-
-<%!
-  public void jspInit() {
-    System.out.println("Hello world!");
-  }
-%>

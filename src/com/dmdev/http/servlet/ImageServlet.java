@@ -1,6 +1,7 @@
 package com.dmdev.http.servlet;
 
 import com.dmdev.http.service.ImageService;
+import com.dmdev.http.util.UrlPath;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,13 +13,13 @@ import lombok.SneakyThrows;
 import java.io.IOException;
 import java.io.InputStream;
 
-@WebServlet("/images/*")
+@WebServlet(UrlPath.IMAGES + "/*")
 public class ImageServlet extends HttpServlet {
     private final ImageService imageService = ImageService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String imagePath = req.getRequestURI().replace("/images", "");
+        String imagePath = req.getRequestURI().replace(UrlPath.IMAGES, "");
         imageService.get(imagePath).ifPresentOrElse(image -> {
                 resp.setContentType("application/octet-stream");
                 writeImage(image, resp);

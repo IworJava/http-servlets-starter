@@ -6,6 +6,7 @@ import com.dmdev.http.entity.Role;
 import com.dmdev.http.exeption.ValidationException;
 import com.dmdev.http.service.UserService;
 import com.dmdev.http.util.JspHelper;
+import com.dmdev.http.util.UrlPath;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,7 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024)
-@WebServlet("/registration")
+@WebServlet(UrlPath.REGISTRATION)
 public class RegistrationServlet extends HttpServlet {
     private final UserService userService = UserService.getInstance();
 
@@ -43,7 +44,7 @@ public class RegistrationServlet extends HttpServlet {
 
         try {
             userService.create(createUserDto);
-            resp.sendRedirect("/login");
+            resp.sendRedirect(UrlPath.LOGIN);
         } catch (ValidationException e) {
             req.setAttribute("errors", e.getErrors());
             doGet(req, resp);
