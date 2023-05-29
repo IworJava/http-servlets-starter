@@ -21,7 +21,15 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserDao implements Dao<Integer, User> {
     private static final UserDao INSTANCE = new UserDao();
-    private static final String FIND_ALL_SQL = "SELECT * FROM users;";
+    private static final String FIND_ALL_SQL = """
+            SELECT id, name, birthday, image, email, password, gender, role
+            FROM users;
+            """;
+    private static final String FIND_BY_EMAIL_AND_PASSWORD_SQL = """
+            SELECT id, name, birthday, image, email, password, gender, role
+            FROM users
+            WHERE email = ? AND password = ?;
+            """;
     private static final String SAVE_SQL = """
             INSERT INTO users(name, birthday, image, email, password, gender, role)
             VALUES (?, ?, ?, ?, ?, ?, ?);
@@ -57,14 +65,30 @@ public class UserDao implements Dao<Integer, User> {
                 .image(resultSet.getObject("image", String.class))
                 .email(resultSet.getObject("email", String.class))
                 .password(resultSet.getObject("password", String.class))
-                .gender(Gender.valueOf(resultSet.getObject("gender", String.class)))
-                .role(Role.valueOf(resultSet.getObject("role", String.class)))
+                .gender(Gender.find(resultSet.getObject("gender", String.class)).orElse(null))
+                .role(Role.find(resultSet.getObject("role", String.class)).orElse(null))
                 .build();
     }
 
     @Override
     public Optional<User> findById(Integer id) {
         return Optional.empty();
+    }
+
+    @SneakyThrows
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        try (
+                Connection connection = ConnectionManager.open();
+                PreparedStatement statement = connection.prepareStatement(FIND_BY_EMAIL_AND_PASSWORD_SQL)
+        ) {
+            statement.setObject(1, email);
+            statement.setObject(2, password);
+
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next()
+                    ? Optional.of(buildUser(resultSet))
+                    : Optional.empty();
+        }
     }
 
     @SneakyThrows
@@ -86,7 +110,6 @@ public class UserDao implements Dao<Integer, User> {
 
     @Override
     public void update(User entity) {
-
     }
 
     @Override
